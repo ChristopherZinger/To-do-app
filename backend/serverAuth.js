@@ -2,7 +2,7 @@ const express = require('express');
 var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
-
+const authenticateToken = require('./myUtils/authUtils/authenticateToken');
 
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
@@ -19,13 +19,11 @@ db.on('error', err => console.log(err));
 db.once('open', () => console.log('Connection with mongoDG ready!'));
 
 
-// const test = () => { console.log('my middleware !') }
-
 // MIDDLEWARE
 app.use(cors())
 app.use('/assets', express.static('public'));
 app.use(express.json());
-// app.use(test);
+app.use(authenticateToken);
 
 
 // --- AUTH PATHS ---

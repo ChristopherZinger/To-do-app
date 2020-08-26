@@ -40,3 +40,4 @@ const TodoListsModel = mongoose.model("TodoLists", TodoLists);
 
 // export models
 module.exports.TodoModel = TodoModel;
+module.exports.TodoListsModel = TodoListsModel;

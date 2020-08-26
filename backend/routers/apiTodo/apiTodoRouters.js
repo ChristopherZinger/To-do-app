@@ -1,12 +1,14 @@
-const authenticateToken = '../../myUtils/authUtils/authenticateToken';
+const TodoListModel = require('../../models/TodoModel/TodoModel').TodoListsModel;
+const TodoModel = require('../../models/TodoModel/TodoModel').TodoModel;
 
 
-function apiTodoRouters(app) {
 
-    app.post('/todoList/create', async (req, res) => {
+module.exports = function (app) {
 
+    app.get('/todo', (req, res) => {
+        console.log('user : ', req.user.email)
+        res.sendStatus(200);
     })
 
 }
 
-module.exports = apiTodoRouters;

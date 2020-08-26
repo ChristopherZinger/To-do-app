@@ -35,5 +35,10 @@ Content-Type: application/json
 
 
 ### RESTRICTED 
-GET http://localhost:localhost:4000/restricted
+GET http://localhost:4000/restricted
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5NDE5LCJleHAiOjE1OTgyMTk0MzR9.576Pgv9f_QLFT_Mnxg-JfDmkbqPPBEkj6vMHxMVjDpw
+
+###
+
+GET http://localhost:4000/todo
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5NDE5LCJleHAiOjE1OTgyMTk0MzR9.576Pgv9f_QLFT_Mnxg-JfDmkbqPPBEkj6vMHxMVjDpw
