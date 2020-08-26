@@ -37,5 +37,14 @@ module.exports = function (app) {
         }
     })
 
+    app.get('/todo-list-of-lists', async (req, res) => {
+        // return fobridden if no user
+        if (req.user === null || typeof req.user.email === 'undefined') return res.sendStatus(403);
+
+        // find user in db
+        const user = await UserModel.findOne({ email: req.user.email })
+        res.status(200);
+        res.json(user.todoLists)
+    })
 }
 

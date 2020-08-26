@@ -55,7 +55,7 @@ class Navbar extends Component {
                                 <div className="dropdown-menu">
                                     <a className="dropdown-item" href="#">Create New List</a>
                                     <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Todo All Lists</a>
+                                    <Link to="/todo-menu" className="dropdown-item">Todo All Lists</Link>
                                 </div>
                             </li>
                         </ul>

@@ -8,7 +8,7 @@ import {
 import AuthMenu from './components/auth/AuthMenu/AuthMenu';
 import { connect } from 'react-redux';
 import Navbar from './components/Navbar/Navbar';
-
+import TodoMenu from './components/todo/TodoMenu/TodoMenu';
 
 function App(props) {
 
@@ -20,6 +20,7 @@ function App(props) {
         <div className='container'>
           <Switch>
             <Route path="/auth" component={AuthMenu} />
+            <Route path="/todo-menu" component={TodoMenu} />
           </Switch>
         </div>
       </Router>
