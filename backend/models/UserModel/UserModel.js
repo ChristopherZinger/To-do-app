@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Quiz Model
+// Create User Model
 let User = new Schema({
     email: {
         type: String,
@@ -16,7 +16,13 @@ let User = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    todoLists: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "todoLists"
+        }
+    ]
 },
 )
 const UserModel = mongoose.model("User", User);

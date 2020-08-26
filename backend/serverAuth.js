@@ -3,6 +3,7 @@ var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 
+
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -18,18 +19,21 @@ db.on('error', err => console.log(err));
 db.once('open', () => console.log('Connection with mongoDG ready!'));
 
 
+// const test = () => { console.log('my middleware !') }
+
 // MIDDLEWARE
 app.use(cors())
 app.use('/assets', express.static('public'));
 app.use(express.json());
+// app.use(test);
 
 
 // --- AUTH PATHS ---
 const authRouters = require('./routers/apiAuth/apiAuthRouters');
 authRouters(app);
 
-// -- RESTRICTED PATHS ---
-const restrictedRouters = require('./routers/apiRestricted/apiRestrictedRouters');
-restrictedRouters(app);
+// -- TODO PATHS ---
+const todoRouters = require('./routers/apiTodo/apiTodoRouters');
+todoRouters(app);
 
 app.listen(4000);
