@@ -46,11 +46,36 @@ const Signup = (props) => {
         <div>
             <h4>Signup</h4>
             <form onSubmit={handleSignupSubmit}>
-                <input type="text" name="email" id="emailInput" />
-                <input type="password" name="password" id="password" />
-                <input type="password" name="passwordConfirm" id="passwordConfirm" />
-                <input type="submit" id="signupSubmitBtn"
-                    className="submitBtn" value="Signup" />
+                <label htmlFor="emailInput">email</label>
+                <input
+                    className="form-control"
+                    type="text" name="email"
+                    id="emailInput" />
+                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+
+                <label htmlFor="password">Password</label>
+                <input
+                    className="form-control"
+                    type="password"
+                    name="password"
+                    id="password" />
+
+                <label htmlFor="passwordConfirm">Confirm Password</label>
+                <input
+                    className="form-control"
+                    type="password"
+                    name="passwordConfirm"
+                    id="passwordConfirm" />
+
+                <br />
+
+                <button
+                    type="submit"
+                    id="signupSubmitBtn"
+                    className="btn btn-primary">
+                    Sign up
+                </button>
+
             </form>
         </div>
     )

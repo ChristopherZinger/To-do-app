@@ -44,11 +44,14 @@ class Login extends Component {
             <div>
                 <h4>Login</h4>
                 <form onSubmit={this.handleLoginSubmit.bind(this)}>
-                    <input type="text" name="email" id="emailInput" />
-                    <input type="password" name="password" id="password" />
+                    <label htmlFor="InputEmail">Email address</label>
+                    <input type="email" name="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
 
-                    <input type="submit" id="handleLoginSubmit"
-                        className="submitBtn" value="Login" />
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+
+                    <br />
+                    <button type="submit" id="handleLoginSubmit" className="btn btn-primary">Login</button>
                 </form>
             </div>
         )

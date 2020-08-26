@@ -38,7 +38,11 @@ Content-Type: application/json
 GET http://localhost:4000/restricted
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5NDE5LCJleHAiOjE1OTgyMTk0MzR9.576Pgv9f_QLFT_Mnxg-JfDmkbqPPBEkj6vMHxMVjDpw
 
-###
+### 
+POST http://localhost:4000/todo
+authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvbWVrQGVtYWlsLmNvbSIsImlhdCI6MTU5ODQ3NjQ2NCwiZXhwIjoxNTk4NDc2NDc5fQ._S7-J4ScvZzMuoLRHb3p-sP6l-SexYSRxU-n0avl1a0
+Content-Type : appliaction/json 
 
-GET http://localhost:4000/todo
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5NDE5LCJleHAiOjE1OTgyMTk0MzR9.576Pgv9f_QLFT_Mnxg-JfDmkbqPPBEkj6vMHxMVjDpw
+{
+    "listTitle":"New List Custom Title"
+}

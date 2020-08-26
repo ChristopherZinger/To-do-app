@@ -50,16 +50,12 @@ class Navbar extends Component {
                                     </Fragment>
                             }
 
-                            <li className="nav-item">
-                                <Link to='/restricted' className="nav-link">Restricted</Link>
-                            </li>
-
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Todo Menu</a>
                                 <div className="dropdown-menu">
-                                    <a className="dropdown-item" href="#">Action</a>
+                                    <a className="dropdown-item" href="#">Create New List</a>
                                     <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Separated link</a>
+                                    <a className="dropdown-item" href="#">Todo All Lists</a>
                                 </div>
                             </li>
                         </ul>
