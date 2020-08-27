@@ -2,8 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-import { connect } from 'react-redux';
-
+import Cookies from 'js-cookie';
 
 const Signup = (props) => {
 
@@ -24,20 +23,26 @@ const Signup = (props) => {
         if (password !== passwordConfirm) return console.log("Type the same password twice.")
 
         // setup data and headers for axios call
-        const url = props.url + '/signup';
-        const headers = {
-            'Content-Type': 'application/json'
-        }
         const data = {
             "email": email,
             "password": password
         }
 
         // call api
-        axios.post(url, data, headers)
+        axios.post('/signup', data)
             .then(res => {
                 // console.log(res.data)
-                console.log('status : ', res.status)
+                if (res.status === 201) {
+                    // set token in cookies
+                    Cookies.set('accessToken', res.data.accessToken, { path: '' });
+                    Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
+                    // set token in headers globaly
+                    axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
+                    console.log(document.cookie)
+                    return console.log('Sign up success : ', res.status)
+
+                }
+                else { return console.log('Something went worng. ', res.status) }
             })
             .catch(err => console.log(err))
     };
@@ -81,10 +86,5 @@ const Signup = (props) => {
     )
 };
 
-const mapStateToProps = state => {
-    return {
-        url: state.apiURL.url,
-    }
-}
 
-export default connect(mapStateToProps)(Signup);
+export default Signup;

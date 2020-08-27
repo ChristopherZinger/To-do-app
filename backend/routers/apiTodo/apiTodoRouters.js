@@ -38,6 +38,7 @@ module.exports = function (app) {
     })
 
     app.get('/todo-list-of-lists', async (req, res) => {
+        console.log(req.cookies)
         // return fobridden if no user
         if (req.user === null || typeof req.user.email === 'undefined') return res.sendStatus(403);
 

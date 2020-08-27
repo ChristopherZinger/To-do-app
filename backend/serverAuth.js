@@ -1,8 +1,9 @@
 const express = require('express');
-var cors = require('cors')
+const cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const authenticateToken = require('./myUtils/authUtils/authenticateToken');
+const cookieParser = require('cookie-parser');
 
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
@@ -20,11 +21,12 @@ db.once('open', () => console.log('Connection with mongoDG ready!'));
 
 
 // MIDDLEWARE
-app.use(cors())
+app.use(cors());
 app.use('/assets', express.static('public'));
-app.use(authenticateToken);
 app.use(express.json());
+app.use(cookieParser())
 
+app.use(authenticateToken);
 
 
 // --- AUTH PATHS ---

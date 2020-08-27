@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 
 class TodoMenu extends Component {
     state = {}
 
-    componentDidMount() {
-        console.log(this.props.accessToken)
+    hasToken() {
+        const cookies = document.cookie;
+        console.log('[TodoMenu.js] cookies :', cookies)
+    }
+
+    fethTodoListOfLists() {
         const url = this.props.url + '/todo-list-of-lists';
-        const headers = {
-            headers: {
-                'authorization': 'Bearer ' + this.props.accessToken,
-            }
-        }
-        axios.get(url, headers)
+        // const headers = {
+        //     headers: {
+        //         'authorization': 'Bearer ' + this.props.accessToken,
+        //     }
+        // }
+        axios.get(url)
             .then(res => console.log(res.data))
             .catch(err => console.log(err))
+    }
+
+    componentDidMount() {
+        this.hasToken();
+        this.fethTodoListOfLists();
     }
 
     render() {
         return (
 
             < div >
-                {this.props.accessToekn == '' ? <Redirect to="/" /> : null}
+                {/* {this.props.accessToekn == '' ? <Redirect to="/" /> : null} */}
                 <div>
                     <h4>List of lists</h4>
                 </div>

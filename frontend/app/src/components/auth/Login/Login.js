@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-import { connect } from 'react-redux';
+import Cookies from 'js-cookie';
 
 class Login extends Component {
+
     handleLoginSubmit(e) {
         // stop submit
         e.preventDefault();
@@ -20,21 +21,23 @@ class Login extends Component {
             || password.length < 4) return console.log('password to short')
 
         // setup data and headers for axios call
-        const url = this.props.url + '/login';
-        const headers = {
-            'Content-Type': 'application/json'
-        }
         const data = {
             "email": email,
             "password": password
         }
 
         // call api
-        axios.post(url, data, headers)
+        axios.post('/login', data)
             .then(res => {
-                this.props.login(res.data.accessToken, res.data.refreshToken)
+                // set token in cookies
+                Cookies.set('accessToken', res.data.accessToken, { path: '' });
+                Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
+                // document.cookie = `accessToken=${res.data.accessToken}; path=/`
+                // document.cookie = ` refreshToken=${res.data.refreshToken}; path=/`
+                // set token in headers globaly
+                axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
                 console.log('Login Success.')
-                this.props.history.push({ pathname: "/" })
+                this.props.history.push({ pathname: "/" }) // redirect to /
             })
             .catch(err => console.log(err))
     };
@@ -58,27 +61,9 @@ class Login extends Component {
     }
 };
 
-const mapStateToProps = state => {
-    return {
-        url: state.apiURL.url,
-        accessToken: state.auth.accessToken,
-        refreshToken: state.auth.refreshToken
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        login: (accessToken, refreshToken) => {
-            dispatch({
-                type: "LOGIN",
-                payload: {
-                    refreshToken: refreshToken,
-                    accessToken: accessToken
-                }
-            })
-        }
-    }
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+
+
+export default Login;

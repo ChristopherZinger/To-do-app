@@ -1,26 +1,28 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import axios from 'axios';
+import getCookie from '../../../utils/cookies/getCookie';
+import Cookies from 'js-cookie';
+
 
 class Logout extends Component {
     handleLogout() {
-        // url
-        const url = this.props.url + '/logout';
-        // headers
-        const headers = {
-            "Content-Type": "application/json"
-        }
         // data
         const data = {
-            "refreshToken": this.props.refreshToken,
-        }
+            'accessToken': getCookie('accessToken'),
+            'refreshToken': getCookie('refreshToken')
+        };
 
-        if (this.props.refreshToken.length < 1) return console.log('You are not authenticated right now.')
+        if (data.refreshToken === '') return console.log('You are not authenticated right now.')
         // call logout 
-        axios.post(url, data, headers)
+        axios.post('/logout', data)
             .then(res => {
                 if (res.status === 204) {
-                    this.props.logout();
+                    // remove cookies 
+                    Cookies.set('accessToken', '', { path: '' });
+                    Cookies.set('refreshToken', '', { path: '' });
+
+                    // delete token from headers globaly
+                    axios.defaults.headers.common['authorization'] = `AUTH TOKEN`;
                     console.log("Logout success.")
                 }
             })
@@ -34,19 +36,5 @@ class Logout extends Component {
         )
     }
 }
-
-// const mapStateToProps = state => {
-//     return {
-//         url: state.apiURL.url,
-//         refreshToken: state.auth.refreshToken,
-//     }
-// }
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         logout: dispatch({ type: 'LOGOUT' })
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Logout);
 
 export default Logout;

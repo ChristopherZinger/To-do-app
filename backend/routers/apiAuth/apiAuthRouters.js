@@ -23,6 +23,23 @@ function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
 }
 
+async function createSetOfJWT(email) {
+    try {
+        // Generate access token
+        const accessToken = generateAccessToken({ user: email });
+
+        // Generate and save refresh token
+        const refreshToken = jwt.sign({ user: email }, process.env.REFRESH_TOKEN_SECRET);
+        const token = new RefreshTokenModel({ token: refreshToken });
+        await token.save();
+        return { accessToken: accessToken, refreshToken: refreshToken }
+    } catch (err) {
+        console.log(err);
+        return;
+    }
+
+}
+
 
 // ROUTS :
 module.exports = function (app) {
@@ -43,13 +60,35 @@ module.exports = function (app) {
             email: email,
             password: hashedPassword
         })
-        await user.save();
+        try {
+            await user.save();
+        } catch (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+
 
         const userSimplified = {
             email: user.email
         }
 
-        res.status(201).send(userSimplified)
+        // create tokens
+        try {
+            // Generate access token
+            const accessToken = generateAccessToken({ user: email });
+
+            // Generate and save refresh token
+            const refreshToken = jwt.sign({ user: email }, process.env.REFRESH_TOKEN_SECRET);
+            const token = new RefreshTokenModel({ token: refreshToken });
+            await token.save();
+            return res.status(201).send({ accessToken: accessToken, refreshToken: refreshToken })
+        } catch (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+
+
+
     }) // ---> CREATE USER 
 
 
@@ -86,13 +125,12 @@ module.exports = function (app) {
         }
     }) // ---> LOGIN
 
-
     // LOGOUT
     app.post('/logout', async (req, res) => {
         // find token in db
         try {
-            await RefreshTokenModel.findOneAndDelete({ token: req.body.refreshToken })
-            res.sendStatus(204) // successfully deleted the token
+            const refreshToken = await RefreshTokenModel.findOneAndDelete({ token: req.body.refreshToken })
+            refreshToken === null ? res.sendStatus(400) : res.sendStatus(204);
         } catch (err) {
             console.log(err)
             res.sendStatus(500)
