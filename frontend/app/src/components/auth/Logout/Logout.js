@@ -17,6 +17,9 @@ class Logout extends Component {
         axios.post('/logout', data)
             .then(res => {
                 if (res.status === 204) {
+                    // haange state 
+                    this.props.logout();
+
                     // remove cookies 
                     Cookies.set('accessToken', '', { path: '' });
                     Cookies.set('refreshToken', '', { path: '' });

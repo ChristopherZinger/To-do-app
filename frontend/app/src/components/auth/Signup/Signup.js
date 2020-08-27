@@ -33,13 +33,16 @@ const Signup = (props) => {
             .then(res => {
                 // console.log(res.data)
                 if (res.status === 201) {
+                    // set isAuth state globaly
+                    props.login();
                     // set token in cookies
                     Cookies.set('accessToken', res.data.accessToken, { path: '' });
                     Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
                     // set token in headers globaly
                     axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
-                    console.log(document.cookie)
+                    props.history.push({ pathname: "/" }) // redirect to /
                     return console.log('Sign up success : ', res.status)
+
 
                 }
                 else { return console.log('Something went worng. ', res.status) }

@@ -7,13 +7,13 @@ import Logout from '../auth/Logout/Logout';
 
 class Navbar extends Component {
     state = {
-        logout: Logout,
+
     }
 
     componentDidMount() {
-        const cookie = decodeURIComponent(document.cookie);
-        // console.log(cookie.trim().split(';'))
+
     }
+
 
     handleLogin() {
         this.setState({ isAuth: true });
@@ -30,20 +30,28 @@ class Navbar extends Component {
 
                     <div className="collapse navbar-collapse" id="navbarColor03">
                         <ul className="navbar-nav mr-auto">
-
                             <li className="nav-item active">
                                 <Link className="nav-link" to='/'>Home <span className="sr-only">(current)</span></Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to='/' className="nav-link" ><Logout /> </Link>
-                            </li>
 
-                            <li className="nav-item">
-                                <Link to='/auth/signup' className="nav-link">Signup</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to='/auth/login' className="nav-link">Login</Link>
-                            </li>
+                            {
+                                this.props.isAuth ?
+                                    <li className="nav-item">
+                                        <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
+                                    </li>
+                                    :
+                                    <Fragment>
+                                        <li className="nav-item">
+                                            <Link to='/auth/signup' className="nav-link">Signup</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to='/auth/login' className="nav-link">Login</Link>
+                                        </li>
+                                    </Fragment>
+                            }
+
+
+
 
 
                             <li className="nav-item dropdown">

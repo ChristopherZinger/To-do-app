@@ -11,8 +11,16 @@ const AuthMenu = props => {
     return (
         <div>
             <Switch>
-                <Route path={props.match.url + "/login"} exact component={Login} />
-                <Route path={props.match.url + "/signup"} exact component={Signup} />
+                <Route
+                    path={props.match.url + "/login"}
+                    exact
+                    component={(p) => <Login {...p} login={props.login} />}
+                />
+                <Route
+                    path={props.match.url + "/signup"}
+                    exact
+                    component={(p) => <Signup {...p} login={props.login} />}
+                />
             </Switch>
         </div>
     )

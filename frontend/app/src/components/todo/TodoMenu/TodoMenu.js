@@ -12,15 +12,12 @@ class TodoMenu extends Component {
     }
 
     fethTodoListOfLists() {
-        const url = this.props.url + '/todo-list-of-lists';
-        // const headers = {
-        //     headers: {
-        //         'authorization': 'Bearer ' + this.props.accessToken,
-        //     }
-        // }
-        axios.get(url)
+        axios.get('/todo-list-of-lists')
             .then(res => console.log(res.data))
-            .catch(err => console.log(err))
+            .catch(err => {
+                // if (res.status === 403) this.props.history.push('/')
+                console.log(err)
+            })
     }
 
     componentDidMount() {

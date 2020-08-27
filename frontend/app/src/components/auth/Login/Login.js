@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
 import Cookies from 'js-cookie';
 
-class Login extends Component {
+function Login(props) {
 
-    handleLoginSubmit(e) {
+    function handleLoginSubmit(e) {
         // stop submit
         e.preventDefault();
 
@@ -29,41 +29,36 @@ class Login extends Component {
         // call api
         axios.post('/login', data)
             .then(res => {
+                // set state globalu
+                props.login();
                 // set token in cookies
                 Cookies.set('accessToken', res.data.accessToken, { path: '' });
                 Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
-                // document.cookie = `accessToken=${res.data.accessToken}; path=/`
-                // document.cookie = ` refreshToken=${res.data.refreshToken}; path=/`
                 // set token in headers globaly
                 axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
                 console.log('Login Success.')
-                this.props.history.push({ pathname: "/" }) // redirect to /
+                props.history.push({ pathname: "/" }) // redirect to /
             })
             .catch(err => console.log(err))
     };
 
-    render() {
-        return (
-            <div>
-                <h4>Login</h4>
-                <form onSubmit={this.handleLoginSubmit.bind(this)}>
-                    <label htmlFor="InputEmail">Email address</label>
-                    <input type="email" name="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
 
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+    return (
+        <div>
+            <h4>Login</h4>
+            <form onSubmit={handleLoginSubmit.bind(this)}>
+                <label htmlFor="InputEmail">Email address</label>
+                <input type="email" name="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
 
-                    <br />
-                    <button type="submit" id="handleLoginSubmit" className="btn btn-primary">Login</button>
-                </form>
-            </div>
-        )
-    }
+                <label htmlFor="exampleInputPassword1">Password</label>
+                <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+
+                <br />
+                <button type="submit" id="handleLoginSubmit" className="btn btn-primary">Login</button>
+            </form>
+        </div>
+    )
+
 };
-
-
-
-
-
 
 export default Login;
