@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import TodoListOfLists from '../TodoList/TodoListOfLists';
 
 class TodoMenu extends Component {
-    state = {}
+
 
     hasToken() {
-        const cookies = document.cookie;
-        console.log('[TodoMenu.js] cookies :', cookies)
+        // const cookies = document.cookie;
+        // console.log('[TodoMenu.js] cookies :', cookies)
     }
 
     fethTodoListOfLists() {
@@ -21,21 +22,37 @@ class TodoMenu extends Component {
     }
 
     componentDidMount() {
-        this.hasToken();
-        this.fethTodoListOfLists();
+        // this.hasToken();
+        // this.fethTodoListOfLists();
     }
 
     render() {
         return (
 
             < div >
-                {/* {this.props.accessToekn == '' ? <Redirect to="/" /> : null} */}
-                <div>
-                    <h4>List of lists</h4>
-                </div>
-                <div>
-                    <h4>Todo list to edit</h4>
-                </div>
+                {!this.props.isAuth ? <Redirect to='/auth/login' /> : null}
+                <Fragment>
+                    <div className="row" >
+                        <div className="col-4" >
+                            <div>
+                                <h4>List of lists</h4>
+                                <TodoListOfLists />
+                            </div>
+                        </div>
+                        <div className="col-8" >
+                            <div>
+                                <h4>Todo list to edit</h4>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </Fragment>
+
+
+
+
+
             </div >
         )
     }

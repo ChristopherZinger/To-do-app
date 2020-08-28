@@ -20,7 +20,7 @@ function checkCredentials(req, res) {
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
 }
 
 async function createSetOfJWT(email) {
@@ -66,8 +66,6 @@ module.exports = function (app) {
             console.log(err);
             return res.sendStatus(500);
         }
-
-
         const userSimplified = {
             email: user.email
         }
@@ -135,9 +133,7 @@ module.exports = function (app) {
             console.log(err)
             res.sendStatus(500)
         }
-
     })
-
 
     // GENEREATE NEW ACCESS TOKEN IF OLD EXPIRED
     app.post('/token', async (req, res) => {

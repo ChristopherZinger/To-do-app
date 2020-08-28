@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import Navbar from './components/Navbar/Navbar';
 import TodoMenu from './components/todo/TodoMenu/TodoMenu';
 import Cookies from 'js-cookie';
-
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -23,10 +23,12 @@ class App extends Component {
 
   componentDidMount() {
     // check if cookies includes token and adjust isAuth State 
-    if (Cookies.get('accessToken') === '') {
+    const accessToken = Cookies.get('accessToken');
+    if (accessToken === '') {
       this.setState({ isAuth: false });
     } else {
       this.setState({ isAuth: true });
+      axios.defaults.headers.common['authorization'] = 'AUTH ' + accessToken;
     }
   }
 
@@ -50,7 +52,7 @@ class App extends Component {
               <Route path="/auth"
                 component={(props) => <AuthMenu {...props} login={this.handleLogin.bind(this)} />}
               />
-              <Route path="/todo-menu" component={TodoMenu} />
+              <Route path="/todo-menu" component={(c_props) => <TodoMenu {...c_props} isAuth={this.state.isAuth} />} />
             </Switch>
           </div>
         </Router>
