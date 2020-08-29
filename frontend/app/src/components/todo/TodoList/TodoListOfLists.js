@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TodoList from './TodoList';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class TodoListOfLists extends Component {
 
@@ -82,7 +83,7 @@ class TodoListOfLists extends Component {
                             return (
                                 <li key={id} className="list-group-item">
                                     <span>
-                                        {list.title}
+                                        <Link to={this.props.match.url + '/' + list['_id']} >{list.title}</Link>
                                     </span>
                                     <span>
                                         <form onSubmit={this.handleRemoveList.bind(this)}>
