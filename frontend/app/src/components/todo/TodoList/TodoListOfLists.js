@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import TodoList from './TodoList';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import styles from './styles/TodoListOfLists.module.css';
+
 
 class TodoListOfLists extends Component {
 
@@ -19,20 +20,14 @@ class TodoListOfLists extends Component {
         // get value
         const inputs = Array.from(e.target.children);
         const newListTitle = inputs.find(node => node.name === "newListTitle").value;
-        console.log('new list title : ', newListTitle)
-        const todoListOfLists = [...this.state.todoListOfLists] //
-        todoListOfLists.push({ title: newListTitle })
 
         axios.post('/add-list', { listTitle: newListTitle })
             .then(res => {
                 console.log('response', res.data)
-                this.setState({
-                    todoListOfLists: todoListOfLists
-                })
+                this.updateListOfLists();
+                inputs.find(node => node.name === "inputId").value = ''
             })
             .catch(err => console.log(err))
-
-        inputs.find(node => node.name === "newListTitle").value = '';
     }
 
     updateListOfLists() {
@@ -69,10 +64,10 @@ class TodoListOfLists extends Component {
             <div>
                 <div className="card mb-3">
                     <div className="card-footer text-muted">
-                        <form onSubmit={this.handleAddList.bind(this)}>
-                            <input type="text" name="newListTitle" placeholder="add new todo list" />
+                        <form onSubmit={this.handleAddList.bind(this)} className={styles.addItemForm}>
+                            <input type="text" name="newListTitle" placeholder="Title of new List" />
                             <button
-                                className="btn btn-secondary disabled"
+                                className={styles.addListBtn}
                                 type="submit" >
                                 Add
                         </button>
@@ -81,16 +76,16 @@ class TodoListOfLists extends Component {
                     <ul className="list-group list-group-flush">
                         {this.state.todoListOfLists.map((list, id) => {
                             return (
-                                <li key={id} className="list-group-item">
-                                    <span>
+                                <li key={id} className={"list-group-item " + styles.myListItem}>
+                                    <div>
                                         <Link to={this.props.match.url + '/' + list['_id']} >{list.title}</Link>
-                                    </span>
-                                    <span>
+                                    </div>
+                                    <div>
                                         <form onSubmit={this.handleRemoveList.bind(this)}>
-                                            <input type="text" name="inputId" value={list["_id"]} hidden />
+                                            <input type="text" name="inputId" value={list["_id"]} readOnly hidden />
                                             <button type="submit" >remove</button>
                                         </form>
-                                    </span>
+                                    </div>
 
                                 </li>
                             )

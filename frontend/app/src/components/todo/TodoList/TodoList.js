@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import styles from './styles/TodoList.module.css';
 
 
 class TodoList extends Component {
@@ -37,11 +38,9 @@ class TodoList extends Component {
         axios.post('/add-todo-item', data)
             .then(res => {
                 if (res.status !== 201) return console.log('Something went wrong.', res.status);
-                console.log('Item was added');
                 this.setState({
                     tasks: res.data
                 })
-                console.log(this.state.tasks)
 
                 // reset input 
                 inputs.find(input => input.name === 'addTodoItem').value = '';
@@ -66,6 +65,25 @@ class TodoList extends Component {
             .catch(err => console.log(err));
     }
 
+    handleToggleStatus(e) {
+        e.preventDefault();
+
+        const itemId = Array.from(e.target.children)
+            .find(node => node.name === 'toggleStatus')
+            .value;
+
+        axios.post('/todo-item-toggle-status', { itemId: itemId })
+            .then(res => {
+                if (res.status !== 200) return console.log('Something went wrong.', res.status);
+                const tasksUpdated = this.state.tasks.map(task => {
+                    return task['_id'] === itemId ? { ...task, status: !task.status } : task
+                })
+                this.setState({ tasks: tasksUpdated })
+            })
+            .catch(err => console.log(err))
+
+    }
+
 
     render() {
 
@@ -74,23 +92,41 @@ class TodoList extends Component {
                 <h3 className="card-header">{this.state.title}</h3>
 
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item" >
-                        <form onSubmit={this.handleAddItem.bind(this)} >
-                            <input type="text" name="addTodoItem" placeholder="add item" />
-                            <button type="submit" >add</button>
+                    <li className={"list-group-item " + styles.liAddItem} >
+                        <form onSubmit={this.handleAddItem.bind(this)} className={styles.addItemForm}>
+                            <input type="text" name="addTodoItem" placeholder="add item" className={styles.addItemInput} />
+                            <button type="submit" className={styles.addItemBtn} >add</button>
                         </form>
                     </li>
-                    {this.state.tasks.map(task =>
-                        <li className="list-group-item">
-                            <span>{task.taskTitle}</span>
-                            <span>
-                                <form onSubmit={this.handleRemoveItem.bind(this)} >
-                                    <input type="text" name="removeItem" value={task['_id']} hidden />
-                                    <button type="submit" >remove</button>
-                                </form>
-                            </span>
-                        </li>)}
+                    {this.state.tasks.map((task, id) =>
+                        <li
+                            key={id}
+                            className={"list-group-item " +
+                                styles.listItem + " " +
+                                (task.status ? styles.taskCompleted : null)
+                            } >
 
+
+                            <div>{task.taskTitle}</div>
+                            <div className={styles.itemOptionsWrapper}>
+                                <div>
+                                    <form onSubmit={this.handleToggleStatus.bind(this)} >
+                                        <input type="text" name="toggleStatus" readOnly value={task['_id']} hidden />
+                                        <button type="submit" >
+                                            <span className={task.status ? styles.green : styles.gray}>
+                                                {task.status ? "done" : "pending"}
+                                            </span>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div>
+                                    <form onSubmit={this.handleRemoveItem.bind(this)} >
+                                        <input type="text" name="removeItem" readOnly value={task['_id']} hidden />
+                                        <button type="submit" >remove</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>)}
 
                 </ul>
                 <div className="card-footer text-muted">

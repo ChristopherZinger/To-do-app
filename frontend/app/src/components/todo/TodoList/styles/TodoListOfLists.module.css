@@ -1,0 +1,34 @@
+.myListItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+button{
+    color: red;
+    background-color: white;
+    border: none;
+}
+
+.addItemForm{
+    display: flex;
+    justify-content: space-between;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+    border: none;
+}
+
+input{
+    background-color: rgba(0,0,0,0);
+    border: none;
+    border-bottom : 1px solid lightgray;
+}
+
+.addListBtn {
+    background-color: rgba(0,0,0,0);
+    padding-left: 20px;
+    color: green;
+    border-left: 1px solid lightgray;
+}
+

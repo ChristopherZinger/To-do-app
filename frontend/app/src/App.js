@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -11,6 +11,8 @@ import Navbar from './components/Navbar/Navbar';
 import TodoMenu from './components/todo/TodoMenu/TodoMenu';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Jumbotron from './components/Jumbotron/Jumbotron';
+
 
 class App extends Component {
   constructor(props) {
@@ -47,7 +49,13 @@ class App extends Component {
         <Router>
           <Navbar isAuth={this.state.isAuth} login={this.handleLogin.bind(this)} logout={this.handleLogout.bind(this)} />
 
+
           <div className='container'>
+            <br /> <br /> <br />
+
+            <Route path='/' exact component={Jumbotron} />
+
+
             <Switch>
               <Route path="/auth"
                 component={(props) => <AuthMenu {...props} login={this.handleLogin.bind(this)} />}
@@ -57,7 +65,7 @@ class App extends Component {
           </div>
         </Router>
 
-      </div>
+      </div >
     );
   }
 }

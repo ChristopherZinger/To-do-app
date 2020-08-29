@@ -37,7 +37,7 @@ function Login(props) {
                 // set token in headers globaly
                 axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
                 console.log('Login Success.')
-                props.history.push({ pathname: "/" }) // redirect to /
+                props.history.push({ pathname: "/todo-menu" }) // redirect to /
             })
             .catch(err => console.log(err))
     };

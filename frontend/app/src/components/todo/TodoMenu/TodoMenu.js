@@ -4,14 +4,12 @@ import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TodoListOfLists from '../TodoList/TodoListOfLists';
 import TodoList from '../TodoList/TodoList';
+import styles from './styles/TodoMenu.module.css';
+
+
 
 class TodoMenu extends Component {
 
-
-    hasToken() {
-        // const cookies = document.cookie;
-        // console.log('[TodoMenu.js] cookies :', cookies)
-    }
 
     fethTodoListOfLists() {
         axios.get('/todo-list-of-lists')
@@ -22,10 +20,6 @@ class TodoMenu extends Component {
             })
     }
 
-    componentDidMount() {
-        // this.hasToken();
-        // this.fethTodoListOfLists();
-    }
 
     render() {
         return (
@@ -36,13 +30,13 @@ class TodoMenu extends Component {
                     <div className="row" >
                         <div className="col-4" >
                             <div>
-                                <h4>List of lists</h4>
+                                <p className='lead'>List of lists</p>
                                 <Route path={this.props.match.url} component={TodoListOfLists} />
                             </div>
                         </div>
                         <div className="col-8" >
                             <div>
-                                <h4>Todo list to edit</h4>
+                                <p className='lead'>Todo list to edit</p>
                                 <Route
                                     path={this.props.match.url + '/:id'}
                                     exact

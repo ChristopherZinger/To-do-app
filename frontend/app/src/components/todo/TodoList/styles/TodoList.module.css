@@ -1,0 +1,54 @@
+
+.taskCompleted{
+    background-color: rgb(252,252,252);
+    text-decoration: line-through;
+}
+
+
+.listItem{
+    display:flex;
+    justify-content: space-between;
+}
+
+.itemOptionsWrapper{
+    display:flex;
+    justify-content: space-between;  
+}
+
+button{
+    background-color: rgba(0,0,0,0);
+    border-left: 1px solid lightgray;
+    padding: 0px 40px;
+}
+
+button:focus{
+    outline:none;
+}
+
+.green{
+    color:green;
+}
+
+.gray{
+    color:lightgray;
+}
+
+.addItemForm{
+    display:flex;
+    justify-content: space-between;  
+}
+
+.addItemInput{
+    width:60%;
+}
+
+
+
+.liAddItem:focus-within {
+    background-color: #EFFFFF;
+}
+
+.addItemBtn{
+    font-weight: 500;
+    color:green;
+}
