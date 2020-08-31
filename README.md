@@ -1,4 +1,4 @@
-# to-do-app
-ChristopherZinger/To-do-app
+![alt img](gif/todo-app.gif "app preview")
 
+# to-do-app
 To Do App made with MEARN stack, JWT authorization and bootswatch.
