@@ -27,7 +27,7 @@ function Login(props) {
         }
 
         // call api
-        axios.post('/login', data)
+        axios.post('/login', data, { withCredentials: true })
             .then(res => {
                 // set state globalu
                 // props.login();
