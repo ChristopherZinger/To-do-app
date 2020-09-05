@@ -5,7 +5,7 @@ const { UserModel } = require('../models/AuthModels');
 
 function generateAccessToken(id) {
     return jwt.sign(
-        user,
+        { id },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '5m' }
     )
@@ -17,7 +17,7 @@ module.exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await UserModel.login(email)
+        const user = await UserModel.login(email, password)
         const token = generateAccessToken(user._id);
         res.cookie(
             'token',

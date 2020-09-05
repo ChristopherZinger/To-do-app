@@ -36,6 +36,7 @@ User.pre('save', function (next) {
 
 User.statics.login = async function (email, password) {
     const user = await this.findOne({ email });
+    console.log(user)
 
     if (user) {
         const auth = bcrypt.compareSync(password, user.password);
@@ -49,7 +50,6 @@ User.statics.login = async function (email, password) {
 
 
 const UserModel = mongoose.model("User", User);
-
 
 
 // export models
