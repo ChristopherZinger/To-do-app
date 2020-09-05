@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 // const authenticateToken = require('./myUtils/authUtils/authenticateToken');
 const cookieParser = require('cookie-parser');
 const authRouters = require('./auth/routes/AuthRoutes')
+const getUser = require('./myUtils/authUtils/getUser');
+
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -33,6 +35,7 @@ app.use(cors(
 ));
 app.use(express.json());
 app.use(cookieParser())
+app.use(getUser);
 
 
 // --- AUTH PATHS ---
