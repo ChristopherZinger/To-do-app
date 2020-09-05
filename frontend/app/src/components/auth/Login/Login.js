@@ -30,12 +30,12 @@ function Login(props) {
         axios.post('/login', data)
             .then(res => {
                 // set state globalu
-                props.login();
-                // set token in cookies
-                Cookies.set('accessToken', res.data.accessToken, { path: '' });
-                Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
-                // set token in headers globaly
-                axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
+                // props.login();
+                // // set token in cookies
+                // Cookies.set('accessToken', res.data.accessToken, { path: '' });
+                // Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
+                // // set token in headers globaly
+                // axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
                 console.log('Login Success.')
                 props.history.push({ pathname: "/todo-menu" }) // redirect to /
             })

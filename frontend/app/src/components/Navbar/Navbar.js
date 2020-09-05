@@ -35,21 +35,20 @@ class Navbar extends Component {
                                     <Link className="nav-link" to='/'>Home <span className="sr-only">(current)</span></Link>
                                 </li>
 
-                                {
-                                    this.props.isAuth ?
-                                        <li className="nav-item">
-                                            <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
-                                        </li>
-                                        :
-                                        <Fragment>
-                                            <li className="nav-item">
-                                                <Link to='/auth/signup' className="nav-link">Signup</Link>
-                                            </li>
-                                            <li className="nav-item">
-                                                <Link to='/auth/login' className="nav-link">Login</Link>
-                                            </li>
-                                        </Fragment>
-                                }
+
+                                <li className="nav-item">
+                                    <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
+                                </li>
+
+                                <Fragment>
+                                    <li className="nav-item">
+                                        <Link to='/auth/signup' className="nav-link">Signup</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to='/auth/login' className="nav-link">Login</Link>
+                                    </li>
+                                </Fragment>
+
 
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="/#" role="button" aria-haspopup="true" aria-expanded="false">Todo Menu</a>
