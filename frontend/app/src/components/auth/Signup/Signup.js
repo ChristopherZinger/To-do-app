@@ -1,26 +1,74 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-import Cookies from 'js-cookie';
+
 
 const Signup = (props) => {
+    // state
+    const [passwordConfirmErrors, setPasswordConfirmErrors] = useState('');
+    const [passwordErrors, setPasswordErrors] = useState('');
+    const [emailErrors, setEmailErrors] = useState('');
+
+    function handleErrors(errors, inputs) {
+        if (errors) {
+            // password errors - backend errors
+            if (errors.password !== undefined) {
+                setPasswordErrors(errors.password)
+                return;
+            }
+
+            // email password - backend errors
+            if (typeof errors.email !== undefined) {
+                setEmailErrors(errors.email)
+                return;
+            }
+        }
+
+        if (inputs) {
+            // validate email on frontend
+            if (!EmailValidator.validate(inputs.email)) {
+                setEmailErrors("This email is invalid.");
+                return false;
+            };
+
+            // validate password - length
+            if (typeof inputs.password !== 'string' || inputs.password.length < 4) {
+                console.log('too short')
+                setPasswordErrors('This password is too short. It has to include more than 4 characters.');
+                return false;
+            }
+
+            // validate password - repeated correctly
+            if (inputs.password !== inputs.passwordConfirm) {
+                setPasswordConfirmErrors("Type the same password twice.");
+                return false;
+            }
+            return true; // inputs are valid
+        }
+    }
+
+    function resetErrors() {
+        setEmailErrors('');
+        setPasswordErrors('');
+        setPasswordConfirmErrors('');
+    }
 
     function handleSignupSubmit(e) {
         // stop submit
         e.preventDefault();
 
-        // get values from input
-        const inputs = Array.from(e.target.children)
-        const email = inputs.find(node => node.name === "email").value
-        const password = inputs.find(node => node.name === "password").value
-        const passwordConfirm = inputs.find(node => node.name === "passwordConfirm").value
+        // reset error messages
+        resetErrors()
 
-        // validate email
-        if (!EmailValidator.validate(email)) return console.log('wrong email');
-        // validate password
-        if (typeof password !== 'string' || password.length < 4) return console.log('password to short')
-        if (password !== passwordConfirm) return console.log("Type the same password twice.")
+        // get values from input
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        const passwordConfirm = e.target.passwordConfirm.value;
+
+        // handle wrong inputs
+        const inputsAreValid = handleErrors(undefined, { email, password, passwordConfirm })
+        if (!inputsAreValid) return;
 
         // setup data and headers for axios call
         const data = {
@@ -31,23 +79,16 @@ const Signup = (props) => {
         // call api
         axios.post('/signup', data, { withCredentials: true })
             .then(res => {
-                // console.log(res.data)
                 if (res.status === 201) {
-                    // // set isAuth state globaly
-                    // props.login();
-                    // // set token in cookies
-                    // Cookies.set('accessToken', res.data.accessToken, { path: '' });
-                    // Cookies.set('refreshToken', res.data.refreshToken, { path: '' });
-                    // // set token in headers globaly
-                    // axios.defaults.headers.common['authorization'] = `AUTH ${res.data.accessToken}`;
-                    // props.history.push({ pathname: "/" }) // redirect to /
-                    return console.log('Sign up success : ', res.status)
-
-
+                    props.history.push({ pathname: "/" }) // redirect to home
+                    return console.log('Sign up success : ');
                 }
                 else { return console.log('Something went worng. ', res.status) }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const errors = err.response.data.errors;
+                handleErrors(errors);
+            })
     };
 
     return (
@@ -59,7 +100,9 @@ const Signup = (props) => {
                     className="form-control"
                     type="text" name="email"
                     id="emailInput" />
-                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                <small id="emailHelp" class="form-text text-muted">
+                    {emailErrors ? emailErrors : ''}
+                </small>
 
                 <label htmlFor="password">Password</label>
                 <input
@@ -67,6 +110,9 @@ const Signup = (props) => {
                     type="password"
                     name="password"
                     id="password" />
+                <small id="emailHelp" class="form-text text-muted">
+                    {passwordErrors ? passwordErrors : ''}
+                </small>
 
                 <label htmlFor="passwordConfirm">Confirm Password</label>
                 <input
@@ -74,7 +120,9 @@ const Signup = (props) => {
                     type="password"
                     name="passwordConfirm"
                     id="passwordConfirm" />
-
+                <small id="emailHelp" class="form-text text-muted">
+                    {passwordConfirmErrors ? passwordConfirmErrors : ''}
+                </small>
                 <br />
 
                 <button

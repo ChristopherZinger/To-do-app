@@ -17,7 +17,11 @@ mongoose.connect(process.env.DATABASE_URL, {
 })
 const db = mongoose.connection;
 db.on('error', err => console.log(err));
-db.once('open', () => console.log('Connection with mongoDG ready!'));
+db.once('open', () => {
+    console.log('Connection with mongoDG ready!');
+    app.listen(4000);
+    console.log('Server Started.');
+});
 
 
 // MIDDLEWARE
@@ -30,16 +34,11 @@ app.use(cors(
 app.use(express.json());
 app.use(cookieParser())
 
-// app.use(authenticateToken);
-
 
 // --- AUTH PATHS ---
 app.use(authRouters)
-// const authRouters = require('./routers/apiAuth/apiAuthRouters');
-// authRouters(app);
 
 // -- TODO PATHS ---
 // const todoRouters = require('./routers/apiTodo/apiTodoRouters');
 // todoRouters(app);
 
-app.listen(4000);
