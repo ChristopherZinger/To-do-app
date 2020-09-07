@@ -2,20 +2,14 @@ import React, { Component, Fragment } from 'react';
 // import axios from 'axios';
 import { Redirect, Route } from 'react-router-dom';
 import TodoListOfLists from '../TodoList/TodoListOfLists';
-// import TodoList from '../TodoList/TodoList';
+import TodoList from '../TodoList/TodoList';
 // import styles from './styles/TodoMenu.module.css';
 
 
 
 class TodoMenu extends Component {
-
-
-
-
-
     render() {
         return (
-
             < div >
                 <Fragment>
                     <div className="row" >
@@ -28,11 +22,11 @@ class TodoMenu extends Component {
                         <div className="col-8" >
                             <div>
                                 <p className='lead'>Todo list to edit</p>
-                                {/* <Route
+                                <Route
                                     path={this.props.match.url + '/:id'}
                                     exact
                                     component={(p) => <TodoList {...p} />}
-                                /> */}
+                                />
                             </div>
                         </div>
                     </div>

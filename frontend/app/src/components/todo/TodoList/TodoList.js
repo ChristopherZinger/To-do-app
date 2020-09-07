@@ -10,10 +10,12 @@ class TodoList extends Component {
     componentDidMount() {
         this.getList();
     }
+
     getList() {
         const id = this.props.match.params.id
         axios.get('/todo-list', { params: { listId: id } })
             .then(res => {
+
                 this.setState({
                     title: res.data.title,
                     tasks: res.data.tasks || [],
@@ -38,9 +40,9 @@ class TodoList extends Component {
         axios.post('/add-todo-item', data)
             .then(res => {
                 if (res.status !== 201) return console.log('Something went wrong.', res.status);
-                this.setState({
-                    tasks: res.data
-                })
+                const { task } = res.data;
+                const tasks = [task, ...this.state.tasks]
+                this.setState({ tasks })
 
                 // reset input 
                 inputs.find(input => input.name === 'addTodoItem').value = '';
@@ -56,7 +58,7 @@ class TodoList extends Component {
             .find(node => node.name === "removeItem")
             .value;
 
-        axios.post('/todo-item-remove', { itemId: itemId })
+        axios.post('/todo-item-remove', { itemId })
             .then(res => {
                 if (res.status !== 200) return console.log('Something went wrong.', res.status);
                 const newTaskList = this.state.tasks.filter(task => task['_id'] !== itemId);
@@ -72,7 +74,7 @@ class TodoList extends Component {
             .find(node => node.name === 'toggleStatus')
             .value;
 
-        axios.post('/todo-item-toggle-status', { itemId: itemId })
+        axios.post('/todo-item-toggle-status', { itemId })
             .then(res => {
                 if (res.status !== 200) return console.log('Something went wrong.', res.status);
                 const tasksUpdated = this.state.tasks.map(task => {
@@ -81,12 +83,10 @@ class TodoList extends Component {
                 this.setState({ tasks: tasksUpdated })
             })
             .catch(err => console.log(err))
-
     }
 
 
     render() {
-
         return (
             <div className="card mb-3">
                 <h3 className="card-header">{this.state.title}</h3>
@@ -105,7 +105,6 @@ class TodoList extends Component {
                                 styles.listItem + " " +
                                 (task.status ? styles.taskCompleted : null)
                             } >
-
 
                             <div>{task.taskTitle}</div>
                             <div className={styles.itemOptionsWrapper}>
