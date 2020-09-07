@@ -9,11 +9,12 @@ const initialState = {
         url: 'http://localhost:4000'
     },
     user: {
-        email: ''
-    },
-    auth: {
-        accessToken: '',
-        refreshToken: ''
+        data: {
+            email: ''
+        },
+        auth: {
+            isAuth: false,
+        }
     }
 }
 
@@ -23,10 +24,14 @@ const reducer = (state = initialState, action) => {
     if (action.type === 'LOGIN') {
         return {
             ...state,
-            auth: {
-                ...state.auth,
-                accessToken: action.payload.accessToken,
-                refreshToken: action.payload.refreshToken
+            user: {
+                data: {
+                    ...state.user.data,
+                },
+                auth: {
+                    ...state.user.auth,
+                    isAuth: true,
+                }
             }
         }
     }
@@ -34,10 +39,14 @@ const reducer = (state = initialState, action) => {
     if (action.type === 'LOGOUT') {
         return {
             ...state,
-            auth: {
-                ...state.auth,
-                accessToken: '',
-                refreshToken: ''
+            user: {
+                data: {
+                    ...state.user.data,
+                },
+                auth: {
+                    ...state.user.auth,
+                    isAuth: false,
+                }
             }
         }
     }

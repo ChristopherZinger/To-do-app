@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
+import { auth } from '../../../utils/auth/auth';
+
+
 
 
 function Login(props) {
@@ -10,6 +13,7 @@ function Login(props) {
     const [emailErrors, setEmailErrors] = useState('');
 
     function handleErrors(errors, inputs) {
+        console.log(errors)
         if (errors) {
             // password errors - backend errors
             if (errors.password !== undefined) {
@@ -68,19 +72,29 @@ function Login(props) {
         }
 
         // call api
-        axios.post('/login', data, { withCredentials: true })
+        axios.post('/login', data)
             .then(res => {
                 if (res.status === 200) {
                     console.log('Login Success.', res.data)
-                    props.history.push({ pathname: "/" }) // redirect to 
+                    // save accessToken as variable
+                    const { accessToken, expirationPeriod } = res.data.auth;
+
+                    auth.login(accessToken, expirationPeriod); // from utils/auth/auth
+
+                    // redirect to 
+                    props.history.push({ pathname: "/" })
                     return;
                 }
                 console.log('Something went wrong durign login.')
 
             })
             .catch(err => {
-                const errors = err.response.data.errors;
-                handleErrors(errors);
+                if (err.response && err.response.data) {
+                    const errors = err.response.data.errors;
+                    handleErrors(errors);
+                }
+                handleErrors(err);
+
             })
     };
 
@@ -92,14 +106,14 @@ function Login(props) {
             <form onSubmit={handleLoginSubmit.bind(this)}>
                 <label htmlFor="InputEmail">Email address</label>
                 <input type="email" name="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
-                <small id="emailHelp" class="form-text text-muted">
+                <small id="emailHelp" className="form-text text-muted">
                     {emailErrors ? emailErrors : ''}
                 </small>
 
                 <br /><br />
                 <label htmlFor="exampleInputPassword1">Password</label>
                 <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-                <small id="emailHelp" class="form-text text-muted">
+                <small id="emailHelp" className="form-text text-muted">
                     {passwordErrors ? passwordErrors : ''}
                 </small>
                 <br /><br />
@@ -113,4 +127,7 @@ function Login(props) {
 
 };
 
+
+
 export default Login;
+

@@ -11,10 +11,11 @@ import axios from 'axios';
 
 
 // axios global settings 
-// axios.defaults.headers.common['authorization'] = 'AUTH TOKEN';
+axios.defaults.headers.common['authorization'] = 'AUTH TOKEN';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:3000';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.withCredentials = true;
 
 // this will make redux devTools work
 const enhancers = compose(

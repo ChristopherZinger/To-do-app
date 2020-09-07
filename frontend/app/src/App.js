@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -6,62 +6,60 @@ import {
   Route
 } from 'react-router-dom';
 import AuthMenu from './components/auth/AuthMenu/AuthMenu';
-import { connect } from 'react-redux';
 import Navbar from './components/Navbar/Navbar';
 import TodoMenu from './components/todo/TodoMenu/TodoMenu';
-import Cookies from 'js-cookie';
-import axios from 'axios';
 import Jumbotron from './components/Jumbotron/Jumbotron';
+import { auth, authEmiter, } from './utils/auth/auth';
+import axios from 'axios';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isAuth: null,
-    }
   }
-
 
   componentDidMount() {
-    // check if cookies includes token and adjust isAuth State 
-    const accessToken = Cookies.get('accessToken');
-    if (accessToken === '') {
-      this.setState({ isAuth: false });
-    } else {
-      this.setState({ isAuth: true });
-      axios.defaults.headers.common['authorization'] = 'AUTH ' + accessToken;
+    // try to get access token with refresh token
+    if (!auth.isAuth) {
+      this.handleGetNewAccessToken();
     }
   }
 
-  handleLogin() {
-    this.setState({ isAuth: true })
+  handleGetNewAccessToken() {
+    console.log(
+      '[APP.js]token before login \n',
+      axios.defaults.headers.common['authorization']
+    )
+    const url = '/get-new-access-token';
+    axios.get(url)
+      .then(res => {
+        const { accessToken, expirationPeriod } = res.data.auth;
+        auth.login(accessToken, expirationPeriod);
+      })
+      .catch(err => {
+        if (err.response && err.response.status === 401) console.log('You need to log in.')
+        console.log(err)
+      })
   }
-
-  handleLogout() {
-    this.setState({ isAuth: false })
-  }
-
 
   render() {
     return (
       <div className="App">
         <Router>
-          <Navbar isAuth={this.state.isAuth} login={this.handleLogin.bind(this)} logout={this.handleLogout.bind(this)} />
-
+          <Navbar />
 
           <div className='container'>
             <br /> <br /> <br />
 
-            <Route path='/' exact component={Jumbotron} />
-
+            <Route path='/' exact component={() => < Jumbotron />} />
 
             <Switch>
               <Route path="/auth"
-                component={(props) => <AuthMenu {...props} login={this.handleLogin.bind(this)} />}
+                component={(props) => <AuthMenu {...props} />}
               />
-              <Route path="/todo-menu" component={(c_props) => <TodoMenu {...c_props} isAuth={this.state.isAuth} />} />
+              <Route path="/todo-menu" component={(c_props) => <TodoMenu {...c_props} />} />
             </Switch>
+
           </div>
         </Router>
 
@@ -70,10 +68,5 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    accessToken: state.auth.accessToken,
-  }
-}
 
-export default connect(mapStateToProps)(App);
+export default App;

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-
+import { auth } from '../../../utils/auth/auth';
 
 const Signup = (props) => {
     // state
@@ -77,9 +77,12 @@ const Signup = (props) => {
         }
 
         // call api
-        axios.post('/signup', data, { withCredentials: true })
+        axios.post('/signup', data)
             .then(res => {
                 if (res.status === 201) {
+                    const { accessToken, expirationPeriod } = res.data.auth;
+                    auth.login(accessToken, expirationPeriod);
+
                     props.history.push({ pathname: "/" }) // redirect to home
                     return console.log('Sign up success : ');
                 }
@@ -100,7 +103,7 @@ const Signup = (props) => {
                     className="form-control"
                     type="text" name="email"
                     id="emailInput" />
-                <small id="emailHelp" class="form-text text-muted">
+                <small id="emailHelp" className="form-text text-muted">
                     {emailErrors ? emailErrors : ''}
                 </small>
 
@@ -110,7 +113,7 @@ const Signup = (props) => {
                     type="password"
                     name="password"
                     id="password" />
-                <small id="emailHelp" class="form-text text-muted">
+                <small id="emailHelp" className="form-text text-muted">
                     {passwordErrors ? passwordErrors : ''}
                 </small>
 
@@ -120,7 +123,7 @@ const Signup = (props) => {
                     type="password"
                     name="passwordConfirm"
                     id="passwordConfirm" />
-                <small id="emailHelp" class="form-text text-muted">
+                <small id="emailHelp" className="form-text text-muted">
                     {passwordConfirmErrors ? passwordConfirmErrors : ''}
                 </small>
                 <br />

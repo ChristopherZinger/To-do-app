@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import getCookie from '../../../utils/cookies/getCookie';
+import { auth } from '../../../utils/auth/auth';
 
 
 
@@ -12,17 +13,16 @@ class Logout extends Component {
             'refreshToken': getCookie('refreshToken')
         };
 
-        // if (data.refreshToken === '') return console.log('You are not authenticated right now.')
         // call logout 
         axios.post('/logout', data, { withCredentials: true })
             .then(res => {
                 if (res.status === 200) {
+                    auth.logout();
                     console.log("Logout success.")
                 }
             })
             .catch(err => console.log(err))
     }
-
 
     render() {
         return (
@@ -30,5 +30,7 @@ class Logout extends Component {
         )
     }
 }
+
+
 
 export default Logout;

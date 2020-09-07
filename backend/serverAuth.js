@@ -2,10 +2,9 @@ const express = require('express');
 const cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
-// const authenticateToken = require('./myUtils/authUtils/authenticateToken');
 const cookieParser = require('cookie-parser');
 const authRouters = require('./auth/routes/AuthRoutes')
-const getUser = require('./myUtils/authUtils/getUser');
+const { getUser } = require('./myUtils/authUtils/authUtils');
 
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
@@ -38,10 +37,33 @@ app.use(cookieParser())
 app.use(getUser);
 
 
+
 // --- AUTH PATHS ---
 app.use(authRouters)
 
 // -- TODO PATHS ---
 // const todoRouters = require('./routers/apiTodo/apiTodoRouters');
 // todoRouters(app);
+
+app.get('/refresh-token', (req, res) => {
+    console.log('[serverAuth.js] /refresh-token, cookie: ',
+        req.cookies)
+    res.status(200).json({ data: 'hello' })
+})
+
+app.post('/no-refresh-token', (req, res) => {
+    console.log('[serverAuth.js] /no-refresh-token, cookie: ',
+        req.cookies)
+    res.status(200).json({ data: 'hello' })
+})
+
+app.get('/is-auth', (req, res) => {
+    if (res.user) {
+        console.log('[serverAuth.js] user is authenticated.')
+    } else {
+        console.log('[serverAuth.js] user is NOT authenticated.')
+    }
+    res.sendStatus(200)
+})
+
 
