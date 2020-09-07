@@ -166,12 +166,12 @@ module.exports.updateAccessToken = (req, res) => {
 
     const { refreshToken } = req.cookies;
 
-    console.log(
-        'accessToken: \n',
-        accessToken, '\n',
-        'refreshToken: \n',
-        refreshToken
-    )
+    // console.log(
+    //     'accessToken: \n',
+    //     accessToken, '\n',
+    //     'refreshToken: \n',
+    //     refreshToken
+    // )
 
     if (accessToken && refreshToken) {
         jwt.verify(

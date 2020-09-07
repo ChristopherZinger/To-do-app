@@ -4,8 +4,11 @@ const controllers = require('../controllers/TodoController');
 
 const router = Router();
 
-router.post('/todo', controllers.createTodoList);
-router.get('/todo-list-of-lists', controllers.getListOfLists);
+router.post('/todo', () => { });
+
+// router.post('/todo-item-remove')
+// router.post('/todo-item-toggle-status')
+// router.post('/add-todo-item')
 
 
 module.exports = router;

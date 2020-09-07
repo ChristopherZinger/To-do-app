@@ -48,9 +48,20 @@ class Navbar extends Component {
                                 </li>
 
                                 {this.state.auth ?
-                                    <li className="nav-item">
-                                        <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
-                                    </li>
+                                    <Fragment>
+                                        <li className="nav-item">
+                                            <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
+                                        </li>
+                                        <li className="nav-item dropdown">
+                                            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="/#" role="button" aria-haspopup="true" aria-expanded="false">Todo Menu</a>
+                                            <div className="dropdown-menu">
+                                                <a className="dropdown-item" href="/#">Create New List</a>
+                                                <div className="dropdown-divider"></div>
+                                                <Link to="/todo-menu" className="dropdown-item">Todo All Lists</Link>
+                                            </div>
+                                        </li>
+                                    </Fragment>
+
                                     :
 
                                     <Fragment>
@@ -62,19 +73,6 @@ class Navbar extends Component {
                                         </li>
                                     </Fragment>
                                 }
-
-                                <li>
-                                    <Link className="nav-link" to='/refresh-token'> access cookie </Link>
-                                </li>
-
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="/#" role="button" aria-haspopup="true" aria-expanded="false">Todo Menu</a>
-                                    <div className="dropdown-menu">
-                                        <a className="dropdown-item" href="/#">Create New List</a>
-                                        <div className="dropdown-divider"></div>
-                                        <Link to="/todo-menu" className="dropdown-item">Todo All Lists</Link>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                     </div>

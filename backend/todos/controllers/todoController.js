@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const router = router();
+const router = Router();
+const { TodoModel, TodoListsModel } = require('../models/TodoModel');
 
 
 
@@ -8,6 +9,5 @@ module.exports.createTodoList = (req, res) => {
 }
 
 
-module.exports.getListOfLists = (req, res) => {
 
-}
+

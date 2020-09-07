@@ -13,7 +13,6 @@ function Login(props) {
     const [emailErrors, setEmailErrors] = useState('');
 
     function handleErrors(errors, inputs) {
-        console.log(errors)
         if (errors) {
             // password errors - backend errors
             if (errors.password !== undefined) {

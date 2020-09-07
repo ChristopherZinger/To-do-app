@@ -1,7 +1,6 @@
 
-import React from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
+
 
 
 class AuthEmitter {
@@ -34,13 +33,8 @@ class Auth {
         axios.defaults.headers.common['authorization'] = `AUTH ${accessToken}`;
         // emit login if state has changed
         if (!this.isAuth) authEmitter.emmit('login')
-        console.log(
-            '[auth.js]token before login \n',
-            axios.defaults.headers.common['authorization']
-        )
 
-
-        // try to get new token 30 sec before old one expires
+        // try to get new token 55 sec before old one expires
         this.timer = window.setTimeout(function () {
             getUpdatedAccessToken.call(this)
         }.bind(this), ((tokenExpTime * 60 * 1000) - 55000))

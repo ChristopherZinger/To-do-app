@@ -5,10 +5,11 @@ import styles from './styles/TodoListOfLists.module.css';
 
 
 class TodoListOfLists extends Component {
-
-    state = {
-        todoListOfLists: [
-        ]
+    constructor(props) {
+        super(props)
+        this.state = {
+            todoListOfLists: []
+        }
     }
 
     componentDidMount() {
@@ -18,14 +19,11 @@ class TodoListOfLists extends Component {
     handleAddList(e) {
         e.preventDefault();
         // get value
-        const inputs = Array.from(e.target.children);
-        const newListTitle = inputs.find(node => node.name === "newListTitle").value;
+        const newListTitle = e.target.newListTitle.value;
 
         axios.post('/add-list', { listTitle: newListTitle })
             .then(res => {
-                console.log('response', res.data)
                 this.updateListOfLists();
-                inputs.find(node => node.name === "inputId").value = ''
             })
             .catch(err => console.log(err))
     }
@@ -33,7 +31,9 @@ class TodoListOfLists extends Component {
     updateListOfLists() {
         axios.get('/todo-list-of-lists')
             .then(res => {
-                this.setState({ todoListOfLists: res.data })
+                console.log(res.data.listOfIds)
+                const { listOfIds } = res.data;
+                this.setState({ todoListOfLists: listOfIds })
             })
             .catch(err => console.log(err));
     }
@@ -41,8 +41,8 @@ class TodoListOfLists extends Component {
     handleRemoveList(e) {
         e.preventDefault();
         // get id of list to remove
-        const inputs = Array.from(e.target.children);
-        const inputId = inputs.find(node => node.name === "inputId").value;
+        const inputId = e.target.inputId.value;
+
         // data
         const data = { 'listId': inputId };
         // call remove list
@@ -90,9 +90,7 @@ class TodoListOfLists extends Component {
                                 </li>
                             )
                         }
-
                         )}
-
                     </ul>
 
                 </div>

@@ -11,15 +11,16 @@ module.exports.getUser = (req, res, next) => {
         async (err, decodedAccessToken) => {
             if (err) {
                 res.user = null;
+                console.log('[authUtils.js] WRONG ACCESS TOKEN. ', err)
                 next();
             } else {
                 try {
                     const user = await UserModel.findById(decodedAccessToken.id);
-                    // console.log('[authUtils.js] function isAuth. user: ', user)
+                    console.log('[authUtils.js] getUser(); user: ', user.email)
                     res.user = user;
                     next();
                 } catch (err) {
-                    console.log('[authUtils.js] function isAuth. error: ', err)
+                    console.log('[authUtils.js] getUser(); ERROR WHILE QUERYING FOR USER. ', err)
                     res.user = null;
                     next();
                 }
