@@ -3,14 +3,12 @@ import axios from 'axios';
 import * as EmailValidator from "email-validator";
 import { auth } from '../../../utils/auth/auth';
 
-
-
-
 function Login(props) {
 
     // state
     const [passwordErrors, setPasswordErrors] = useState('');
     const [emailErrors, setEmailErrors] = useState('');
+    const [loginBtnIsActive, setLoginBtnIsActive] = useState(true);
 
     function handleErrors(errors, inputs) {
         if (errors) {
@@ -50,6 +48,11 @@ function Login(props) {
     }
 
     function handleLoginSubmit(e) {
+        if (!loginBtnIsActive) return;
+
+        // deactivate login btn
+        setLoginBtnIsActive(false)
+
         // stop submit
         e.preventDefault();
 
@@ -79,6 +82,8 @@ function Login(props) {
                 const { accessToken, expirationPeriod } = res.data.auth;
                 auth.login(accessToken, expirationPeriod); // from utils/auth/auth
 
+                // update btn style
+                setLoginBtnIsActive(true)
                 // redirect to 
                 props.history.push({ pathname: "/" })
                 return;
@@ -90,6 +95,8 @@ function Login(props) {
                     handleErrors(errors);
                 }
                 handleErrors(err);
+                // update btn style
+                setLoginBtnIsActive(true)
             })
     };
 
@@ -113,7 +120,8 @@ function Login(props) {
                 </small>
                 <br /><br />
 
-                <button type="submit" id="handleLoginSubmit" className="btn btn-primary">Login</button>
+                <button type="submit" id="handleLoginSubmit"
+                    className={loginBtnIsActive ? "btn btn-primary" : "btn btn-secondary disabled"}>Login</button>
 
 
             </form>

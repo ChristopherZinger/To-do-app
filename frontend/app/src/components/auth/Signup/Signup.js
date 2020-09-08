@@ -9,6 +9,7 @@ const Signup = (props) => {
     const [passwordConfirmErrors, setPasswordConfirmErrors] = useState('');
     const [passwordErrors, setPasswordErrors] = useState('');
     const [emailErrors, setEmailErrors] = useState('');
+    const [signupBtnIsActive, setSignupBtnIsActive] = useState(true);
 
     function handleErrors(errors, inputs) {
         if (errors) {
@@ -55,6 +56,9 @@ const Signup = (props) => {
     }
 
     function handleSignupSubmit(e) {
+        if (!signupBtnIsActive) return;
+        setSignupBtnIsActive(false);
+
         // stop submit
         e.preventDefault();
 
@@ -79,16 +83,21 @@ const Signup = (props) => {
         // call api
         axios.post('/signup', data)
             .then(res => {
-                if (res.status === 201) {
-                    const { accessToken, expirationPeriod } = res.data.auth;
-                    auth.login(accessToken, expirationPeriod);
 
-                    props.history.push({ pathname: "/" }) // redirect to home
-                    return console.log('Sign up success : ');
-                }
-                else { return console.log('Something went worng. ', res.status) }
+                const { accessToken, expirationPeriod } = res.data.auth;
+                auth.login(accessToken, expirationPeriod);
+
+                //update style
+                setSignupBtnIsActive(true);
+
+                //redirect
+                props.history.push({ pathname: "/" }) // redirect to home
+                return console.log('Sign up success : ');
+
             })
             .catch(err => {
+                //update style
+                setSignupBtnIsActive(true);
                 const errors = err.response.data.errors;
                 handleErrors(errors);
             })

@@ -53,7 +53,7 @@ class Navbar extends Component {
                                             <Link to='/' className="nav-link" ><Logout logout={this.props.logout} /> </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/todo-menu" className="dropdown-item">My Lists</Link>
+                                            <Link to="/todo-menu" className="nav-link" >My Lists</Link>
                                         </li>
                                     </Fragment>
 
