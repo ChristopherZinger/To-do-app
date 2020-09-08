@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styles from './styles/TodoList.module.css';
-
+import { authEmitter } from '../../../utils/auth/auth';
 
 class TodoList extends Component {
     state = {
         tasks: [],
     }
     componentDidMount() {
+        // get list when access token is updated
+        authEmitter.on('login', () => { this.getList(); })
+        // get list on mount
         this.getList();
     }
 

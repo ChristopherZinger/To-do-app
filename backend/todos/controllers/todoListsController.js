@@ -6,7 +6,7 @@ const path = require('path');
 
 
 function handleErrors(error) {
-    console.log("[todoListsCon] Error Handling : \n ", error)
+    console.log("[todoListsController] Error Handling : \n ", error)
 
     switch (error) {
         case 'You need to log in again':

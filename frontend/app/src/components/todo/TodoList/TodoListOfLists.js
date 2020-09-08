@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styles from './styles/TodoListOfLists.module.css';
-
+import { authEmitter } from '../../../utils/auth/auth';
 
 class TodoListOfLists extends Component {
     constructor(props) {
@@ -13,29 +13,40 @@ class TodoListOfLists extends Component {
     }
 
     componentDidMount() {
+        // get items if when access token is updated
+        authEmitter.on('login', () => {
+            this.updateListOfLists();
+        })
+        // update list on mount
         this.updateListOfLists();
     }
 
-    handleAddList(e) {
+    async handleAddList(e) {
         e.preventDefault();
         // get value
         const newListTitle = e.target.newListTitle.value;
+        if (!newListTitle) return; // return if input is empty
 
-        axios.post('/add-list', { listTitle: newListTitle })
-            .then(res => {
-                this.updateListOfLists();
-            })
-            .catch(err => console.log(err))
+        // reset input
+        e.target.newListTitle.value = '';
+
+        try {
+            await axios.post('/add-list', { listTitle: newListTitle })
+            // update list
+            this.updateListOfLists();
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 
     updateListOfLists() {
         axios.get('/todo-list-of-lists')
             .then(res => {
-                console.log(res.data.listOfIds)
                 const { listOfIds } = res.data;
                 this.setState({ todoListOfLists: listOfIds })
             })
-            .catch(err => console.log(err));
+            .catch(err => null);
     }
 
     handleRemoveList(e) {

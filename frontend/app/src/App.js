@@ -11,7 +11,7 @@ import TodoMenu from './components/todo/TodoMenu/TodoMenu';
 import Jumbotron from './components/Jumbotron/Jumbotron';
 import { auth } from './utils/auth/auth';
 import axios from 'axios';
-import Users from './components/test/AllUsers';
+
 
 class App extends Component {
 
@@ -22,19 +22,20 @@ class App extends Component {
     }
   }
 
-  handleGetNewAccessToken() {
+  async handleGetNewAccessToken() {
 
     const url = '/get-new-access-token';
-    axios.get(url)
-      .then(res => {
-        const { accessToken, expirationPeriod } = res.data.auth;
-        auth.login(accessToken, expirationPeriod);
-      })
-      .catch(err => {
-        if (err.response && err.response.status === 401) {
-          console.log('You not logged in.')
-        }
-      })
+    try {
+      const res = await axios.get(url);
+      console.log('new token obtained')
+      const { accessToken, expirationPeriod } = res.data.auth;
+      auth.login(accessToken, expirationPeriod);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        console.log('You not logged in.')
+      }
+    }
+
   }
 
   render() {
@@ -42,7 +43,6 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar />
-          {/* <Users /> */}
 
           <div className='container'>
             <br /> <br /> <br />
