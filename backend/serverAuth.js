@@ -9,6 +9,8 @@ const todoRouters = require('./todos/routes/TodoRoutes');
 const todoListsRouters = require('./todos/routes/TodoListsRoutes');
 
 
+const testRouters = require('./test/testRoutes');
+
 // set up env variables
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -48,5 +50,9 @@ app.use(authRouters);
 app.use(todoRouters);
 app.use(todoListsRouters);
 
+
+
+
+app.use(testRouters);
 
 

@@ -11,7 +11,7 @@ import TodoMenu from './components/todo/TodoMenu/TodoMenu';
 import Jumbotron from './components/Jumbotron/Jumbotron';
 import { auth } from './utils/auth/auth';
 import axios from 'axios';
-
+import Users from './components/test/AllUsers';
 
 class App extends Component {
 
@@ -42,6 +42,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar />
+          {/* <Users /> */}
 
           <div className='container'>
             <br /> <br /> <br />
@@ -57,7 +58,6 @@ class App extends Component {
 
           </div>
         </Router>
-
       </div >
     );
   }

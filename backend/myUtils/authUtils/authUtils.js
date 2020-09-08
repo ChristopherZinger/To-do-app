@@ -11,7 +11,7 @@ module.exports.getUser = (req, res, next) => {
         async (err, decodedAccessToken) => {
             if (err) {
                 res.user = null;
-                console.log('[authUtils.js] WRONG ACCESS TOKEN. ', err)
+                console.log('[authUtils.js] getUser. invalid token ')
                 next();
             } else {
                 try {
@@ -20,7 +20,7 @@ module.exports.getUser = (req, res, next) => {
                     res.user = user;
                     next();
                 } catch (err) {
-                    console.log('[authUtils.js] getUser(); ERROR WHILE QUERYING FOR USER. ', err)
+                    console.log('[authUtils.js] getUser(); ERROR WHILE QUERYING FOR USER. ')
                     res.user = null;
                     next();
                 }

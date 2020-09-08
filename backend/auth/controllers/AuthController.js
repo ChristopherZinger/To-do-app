@@ -22,7 +22,7 @@ function generateRefreshToken(id) {
 }
 
 function handleErrors(err) {
-    console.log(err.message, err.code);
+    console.log('[AuthController.js] handleErrors : ', err.message, err.code);
     let errors = { email: '', password: '', code: null };
 
     // incorrect email -> errors in User.login
@@ -91,12 +91,11 @@ module.exports.login = async function (req, res) {
 
     try {
         const user = await UserModel.login(email, password)
-
         const accessToken = await loginWithTokens(user._id, res)
 
         // send accessToken as json
         return res.status(200).json({
-            user: { ...user._doc },
+            user: { email: user._doc.email },
             auth: { accessToken, expirationPeriod }
         });
 
@@ -121,7 +120,7 @@ module.exports.signup = async (req, res) => {
 
         newUser.save(); // save user after all executed correctly
         return res.status(201).json({
-            user: { ...newUser._doc },
+            user: { email: newUser._doc.email },
             auth: { accessToken, expirationPeriod }
         });
 

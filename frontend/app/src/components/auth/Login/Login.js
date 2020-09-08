@@ -73,27 +73,23 @@ function Login(props) {
         // call api
         axios.post('/login', data)
             .then(res => {
-                if (res.status === 200) {
-                    console.log('Login Success.', res.data)
-                    // save accessToken as variable
-                    const { accessToken, expirationPeriod } = res.data.auth;
 
-                    auth.login(accessToken, expirationPeriod); // from utils/auth/auth
+                console.log('Login Success.', res.data.user)
+                // save accessToken as variable
+                const { accessToken, expirationPeriod } = res.data.auth;
+                auth.login(accessToken, expirationPeriod); // from utils/auth/auth
 
-                    // redirect to 
-                    props.history.push({ pathname: "/" })
-                    return;
-                }
-                console.log('Something went wrong durign login.')
-
+                // redirect to 
+                props.history.push({ pathname: "/" })
+                return;
             })
             .catch(err => {
+                console.log(err)
                 if (err.response && err.response.data) {
                     const errors = err.response.data.errors;
                     handleErrors(errors);
                 }
                 handleErrors(err);
-
             })
     };
 
