@@ -1,136 +1,83 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import * as EmailValidator from "email-validator";
+import React, { Fragment, useState } from 'react';
+import AuthForm from '../AuthForm/AuthForm';
 import { auth } from '../../../utils/auth/auth';
 
-function Login(props) {
+export default class LoginForm extends React.Component {
+    render() {
+        const inputs = []
 
-    // state
-    const [passwordErrors, setPasswordErrors] = useState('');
-    const [emailErrors, setEmailErrors] = useState('');
-    const [loginBtnIsActive, setLoginBtnIsActive] = useState(true);
-
-    function handleErrors(errors, inputs) {
-        if (errors) {
-            // password errors - backend errors
-            if (errors.password !== undefined) {
-                setPasswordErrors(errors.password)
-                return;
+        // add email field
+        inputs.push({
+            input: {
+                id: "email",
+                name: "email",
+                type: "email",
+                placeholder: "Email",
+                classes: [],
+            },
+            label: {
+                txt: "Email"
+            },
+            info: {
+                classes: []
             }
+        })
 
-            // email password - backend errors
-            if (typeof errors.email !== undefined) {
-                setEmailErrors(errors.email)
-                return;
+        // add password field
+        inputs.push({
+            input: {
+                id: "password",
+                name: "password",
+                type: "password",
+                placeholder: "Password",
+                classes: [],
+            },
+            label: {
+                txt: "Password"
+            },
+            info: {
+                classes: []
             }
-        }
+        })
 
-        if (inputs) {
-            // validate email on frontend
-            if (!EmailValidator.validate(inputs.email)) {
-                setEmailErrors("This email is invalid.");
-                return false;
-            };
+        // const passwordConfirmInput = {
+        //     input: {
+        //         id: "passwordConfirm",
+        //         name: "passwordConfirm",
+        //         type: "password",
+        //         placeholder: "Confirm Password",
+        //         classes: [],
+        //     },
+        //     label: {
+        //         txt: "Confirm Password"
+        //     },
+        //     info: {
+        //         classes: []
+        //     }
+        // }
 
-            // validate password - length
-            if (typeof inputs.password !== 'string' || inputs.password.length < 4) {
-                console.log('too short')
-                setPasswordErrors('This password is too short. It has to include more than 4 characters.');
-                return false;
-            }
-            return true; // inputs are valid
-        }
-    }
-
-    function resetErrors() {
-        setEmailErrors('');
-        setPasswordErrors('');
-    }
-
-    function handleLoginSubmit(e) {
-        if (!loginBtnIsActive) return;
-
-        // deactivate login btn
-        setLoginBtnIsActive(false)
-
-        // stop submit
-        e.preventDefault();
-
-        // reset errors
-        resetErrors()
-
-        // get values from input
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-
-        // validate inputs
-        const inputsAreValid = handleErrors(undefined, { email, password })
-        if (!inputsAreValid) return;
-
-        // setup data and headers for axios call
-        const data = {
-            "email": email,
-            "password": password
-        }
-
-        // call api
-        axios.post('/login', data)
-            .then(res => {
-
-                console.log('Login Success.', res.data.user)
+        const submit = {
+            txt: 'submit',
+            url: '/login',
+            success: (data) => {
                 // save accessToken as variable
-                const { accessToken, expirationPeriod } = res.data.auth;
+                const { accessToken, expirationPeriod } = data;
                 auth.login(accessToken, expirationPeriod); // from utils/auth/auth
+            },
+            error: () => {
+                console.log('error while submiting login form')
+            }
+        }
 
-                // update btn style
-                setLoginBtnIsActive(true)
-                // redirect to 
-                props.history.push({ pathname: "/" })
-                return;
-            })
-            .catch(err => {
-                console.log(err)
-                if (err.response && err.response.data) {
-                    const errors = err.response.data.errors;
-                    handleErrors(errors);
-                }
-                handleErrors(err);
-                // update btn style
-                setLoginBtnIsActive(true)
-            })
-    };
-
-
-    return (
-        <div>
-            <h4>Login</h4>
-            <br />
-            <form onSubmit={handleLoginSubmit.bind(this)}>
-                <label htmlFor="InputEmail">Email address</label>
-                <input type="email" name="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
-                <small id="emailHelp" className="form-text text-muted">
-                    {emailErrors ? emailErrors : ''}
-                </small>
-
-                <br /><br />
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-                <small id="emailHelp" className="form-text text-muted">
-                    {passwordErrors ? passwordErrors : ''}
-                </small>
-                <br /><br />
-
-                <button type="submit" id="handleLoginSubmit"
-                    className={loginBtnIsActive ? "btn btn-primary" : "btn btn-secondary disabled"}>Login</button>
-
-
-            </form>
-        </div>
-    )
-
-};
-
-
-
-export default Login;
+        return (
+            <AuthForm
+                submit={submit}
+                inputs={inputs}
+            >
+                <h4>Login</h4>
+                <p>Hello, Log in with your  email and password.</p>
+            </AuthForm>
+        )
+    }
+}
 
