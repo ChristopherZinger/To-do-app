@@ -1,0 +1,50 @@
+.authform{
+    display: block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px lightgray;
+    width: 400px;
+    padding: 50px;
+}
+.authform h4{
+    margin-bottom: 30px;
+}
+
+.authform p{
+    margin-bottom: 30px;
+}
+
+.authform label{
+    font-size: 10pt;
+    color: gray;
+}
+
+.authform small {
+    color: red;
+}
+
+.authform > div {
+    margin-bottom: 30px;
+    width: 100%;
+
+}
+
+
+.authform input {
+    width: 100%;
+}
+
+.authform button {
+    display: block;
+    padding: 10px 50px;
+    position: relative;
+    background-color: lightcoral;
+    color : white;
+    font-weight: bold;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 70px;
+}
